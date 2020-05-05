@@ -1,8 +1,8 @@
 # Hebcal
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hebcal`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem uses the REST api developed by the [Hebcal][hebcal] site to convert a Gregorian date to a Hebrew date.  It returns a text string of the Gregorian date followed by the Hebrew date in parenthesis like so:
 
-TODO: Delete this and the text above, and describe your gem
+10 June 1963 (18 Sivan 5723)
 
 ## Installation
 
@@ -22,7 +22,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Basic usage:
+
+```ruby
+require 'hebcal'
+
+HebCal.g2h(date) 
+
+```
 
 ## Development
 
