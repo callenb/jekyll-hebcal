@@ -1,10 +1,13 @@
 require "jekyll"
 require "jekyll-hebcal/version"
+require "date"
+require "rest-client"
+require "json"
 
 module Jekyll
   module Hebcal
 
-    class HebcalTag < Liquid::HebcalTag
+    class HebcalTag < Liquid::Tag
 
       BASE_URL = 'https://www.hebcal.com/converter/'
   
@@ -23,12 +26,12 @@ module Jekyll
 
       def render(context)
         date_as_text = "#{context[@content.strip]}"
-        date_as_date = parse_date(date_as_text)
+        date_as_date = parse_datetime(date_as_text)
 
-        if is_date(date_as_date)
-          %Q{"#{date_as_text} #{g2d(date_as_date)}}
+        if is_datetime(date_as_date)
+          %Q{IT IS A DATE #{date_as_text} #{g2d(date_as_date)}}
         else
-          %Q{"#{content}}  
+          %Q{IT IS NOT A DATE #{context[@content]}}
         end  
       end
 
@@ -71,7 +74,18 @@ module Jekyll
     
         retval
       end
-    
+
+      def parse_datetime(date_as_text)
+        DateTime.parse(date_as_text)
+      end
+
+      def is_datetime(possible_datetime)
+
+        puts "##### #{(possible_datetime.is_a?(DateTime))} ######"
+        possible_datetime.is_a?(DateTime) ? true : false
+      end
+
     end
   end
 end
+Liquid::Template.register_tag('hebcal',Jekyll::Hebcal::HebcalTag)
