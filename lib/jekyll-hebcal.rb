@@ -19,20 +19,21 @@ module Jekyll
     
       G2H = 'g2h=1'
     
-      def initialize(tagName, content, tokens)
+      def initialize(tagName, tagText, tokens)
         super
-        @content = content
+        @text = tagText
       end
 
       def render(context)
-        date_as_text = "#{context[@content.strip]}"
-        date_as_date = parse_datetime(date_as_text)
 
-        if is_datetime(date_as_date)
-          %Q{IT IS A DATE #{date_as_text} #{g2d(date_as_date)}}
+        begin
+          gregorian_date = Date.parse("#{@text}")
+        rescue
+          %Q{#{@text}}
         else
-          %Q{IT IS NOT A DATE #{context[@content]}}
-        end  
+          %Q{#{g2d(gregorian_date)}}
+        end
+        
       end
 
       def g2d(date) 
@@ -73,16 +74,6 @@ module Jekyll
           response_hash['hy'].to_s + ')'
     
         retval
-      end
-
-      def parse_datetime(date_as_text)
-        DateTime.parse(date_as_text)
-      end
-
-      def is_datetime(possible_datetime)
-
-        puts "##### #{(possible_datetime.is_a?(DateTime))} ######"
-        possible_datetime.is_a?(DateTime) ? true : false
       end
 
     end
