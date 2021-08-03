@@ -66,16 +66,33 @@ module Jekyll
     
         response_hash = JSON.parse(response)
     
-        retval = response_hash['gd'].to_s + ' ' +
+        gd = response_hash['gd']
+        hd = response_hash['hd']
+
+        retval = gd.to_s + ordinal(gd) + ' ' +
           Date::MONTHNAMES[response_hash['gm']] + ' ' +
           response_hash['gy'].to_s + ' (' +
-          response_hash['hd'].to_s + ' ' +
+          hd.to_s + ordinal(hd) + ' ' +
           response_hash['hm'].to_s + ' ' +
           response_hash['hy'].to_s + ')'
     
         retval
       end
 
+      def ordinal(number)
+
+        if number == 1 || number == 21 || number == 31
+          ordinal = 'st'
+        elsif number == 2 || number == 22
+          ordinal = 'nd'
+        elsif number == 3 || number == 23
+          ordinal = 'rd'
+        else 
+          ordinal = 'th'
+        end
+
+        "<sup>#{ordinal}</sup>"
+      end
     end
   end
 end
